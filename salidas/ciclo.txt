@@ -1,0 +1,25 @@
+SIMULACIÓN DE MÁQUINA DE TURING DETERMINISTA
+Entrada: 2
+Blanco: _
+Notación: α q β; el cabezal lee el primer símbolo de β.
+C0 es inicial; cada ⊢ representa una transición.
+
+C0: q0 2
+⊢ C1: 2 qIda _
+⊢ C2: 2_ qVuelta _
+⊢ C3: 2 qIda _
+⊢ C4: 2_ qVuelta _
+⊢ C5: 2 qIda _
+⊢ C6: 2_ qVuelta _
+⊢ C7: 2 qIda _
+⊢ C8: 2_ qVuelta _
+⊢ C9: 2 qIda _
+⊢ C10: 2_ qVuelta _
+⊢ C11: 2 qIda _
+⊢ C12: 2_ qVuelta _
+
+Resultado: LIMITE_ALCANZADO
+Transiciones ejecutadas: 12
+Estado final observado: qVuelta
+Ejecución interrumpida por el límite. La máquina no se ha detenido.
+Este límite por sí solo NO demuestra un ciclo infinito.

@@ -1,0 +1,21 @@
+SIMULACIÓN DE MÁQUINA DE TURING DETERMINISTA
+Entrada: 001
+Blanco: _
+Notación: α q β; el cabezal lee el primer símbolo de β.
+C0 es inicial; cada ⊢ representa una transición.
+
+C0: q0 001
+⊢ C1: X qBusca1 01
+⊢ C2: X0 qBusca1 1
+⊢ C3: X qRegresa 0Y
+⊢ C4: qRegresa X0Y
+⊢ C5: qRegresa _X0Y
+⊢ C6: q0 X0Y
+⊢ C7: X q0 0Y
+⊢ C8: XX qBusca1 Y
+⊢ C9: XXY qBusca1 _
+⊢ C10: XXY_ qRechaza _
+
+Resultado: RECHAZADA
+Transiciones ejecutadas: 10
+Estado final observado: qRechaza

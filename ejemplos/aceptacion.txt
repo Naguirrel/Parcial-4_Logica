@@ -1,0 +1,57 @@
+# M reconoce {0^n 1^n | n >= 1}; las entradas que empiezan con 2 no se detienen.
+# Cada símbolo ocupa una celda. X marca un 0; Y marca un 1.
+estados: q0 qBusca1 qRegresa qVerifica qIda qVuelta qAcepta qRechaza
+alfabeto_entrada: 0 1 2
+alfabeto_cinta: 0 1 2 X Y _
+blanco: _
+inicial: q0
+aceptacion: qAcepta
+rechazo: qRechaza
+entrada: 0011
+
+transiciones:
+# Seleccionar el primer 0 sin marcar o verificar los Y restantes.
+q0 0 -> qBusca1 X R
+q0 1 -> qRechaza 1 R
+q0 2 -> qIda 2 R
+q0 X -> q0 X R
+q0 Y -> qVerifica Y R
+q0 _ -> qRechaza _ R
+
+# Buscar el 1 que corresponde al 0 marcado.
+qBusca1 0 -> qBusca1 0 R
+qBusca1 1 -> qRegresa Y L
+qBusca1 2 -> qRechaza 2 R
+qBusca1 X -> qRechaza X R
+qBusca1 Y -> qBusca1 Y R
+qBusca1 _ -> qRechaza _ R
+
+# Volver al blanco que está a la izquierda de la entrada.
+qRegresa 0 -> qRegresa 0 L
+qRegresa 1 -> qRegresa 1 L
+qRegresa 2 -> qRechaza 2 R
+qRegresa X -> qRegresa X L
+qRegresa Y -> qRegresa Y L
+qRegresa _ -> q0 _ R
+
+# Solo deben quedar unos marcados: Y* seguido de blanco.
+qVerifica 0 -> qRechaza 0 R
+qVerifica 1 -> qRechaza 1 R
+qVerifica 2 -> qRechaza 2 R
+qVerifica X -> qRechaza X R
+qVerifica Y -> qVerifica Y R
+qVerifica _ -> qAcepta _ R
+
+# Oscilar entre dos posiciones sin cambiar ningún símbolo.
+qIda 0 -> qVuelta 0 R
+qIda 1 -> qVuelta 1 R
+qIda 2 -> qVuelta 2 R
+qIda X -> qVuelta X R
+qIda Y -> qVuelta Y R
+qIda _ -> qVuelta _ R
+qVuelta 0 -> qIda 0 L
+qVuelta 1 -> qIda 1 L
+qVuelta 2 -> qIda 2 L
+qVuelta X -> qIda X L
+qVuelta Y -> qIda Y L
+qVuelta _ -> qIda _ L
