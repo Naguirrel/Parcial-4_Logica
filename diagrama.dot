@@ -1,50 +1,60 @@
-// Fuente del diagrama completo; las etiquetas agrupadas expanden las 36 reglas.
+// Diseño con posiciones fijas: neato -n2 -Tsvg diagrama.dot -o diagrama.svg
+// Las etiquetas usan la notación del PDF de clase. Se conservan las 36 reglas.
 digraph MaquinaTuring {
-    graph [rankdir=LR, bgcolor="white", pad="0.35", nodesep="0.65", ranksep="1.05",
-           fontname="Arial", fontsize=22, labelloc=t,
-           label="Máquina de Turing determinista · una cinta\nAcepta 0ⁿ1ⁿ (n ≥ 1) · entra en ciclo si la entrada empieza con 2"];
-    node [shape=circle, fontname="Arial", fontsize=14, color="#263b53", penwidth=1.6,
-          style=filled, fillcolor="#edf4fb", margin="0.12"];
-    edge [fontname="Consolas", fontsize=12, color="#415b77", fontcolor="#263b53", arrowsize=0.85];
+    graph [layout=neato, bgcolor="white", pad="0.25", splines=true,
+           fontname="Arial", fontsize=28, labelloc=t,
+           label="Máquina de Turing determinista\nL = {0ⁿ1ⁿ | n ≥ 1}"];
+    node [shape=circle, fontname="Arial", fontsize=20, color="#334155", penwidth=1.8,
+          style=filled, fillcolor="#f1f5f9", width=1.5, height=1.5, fixedsize=true, pin=true];
+    edge [fontname="Cambria Math", fontsize=21, color="#334155", fontcolor="#1e293b",
+          penwidth=1.7, arrowsize=0.9];
 
-    inicio [shape=point, width=0.1, label="", fillcolor="#263b53"];
-    q0 [label="q0"];
-    qBusca1 [label="qBusca1"];
-    qRegresa [label="qRegresa"];
-    qVerifica [label="qVerifica"];
-    qIda [label="qIda", fillcolor="#fff1d6"];
-    qVuelta [label="qVuelta", fillcolor="#fff1d6"];
-    qAcepta [shape=doublecircle, label="qAcepta\nACEPTACIÓN", fillcolor="#e3f4e8", color="#277346"];
-    qRechaza [shape=doublecircle, label="qRechaza\nRECHAZO", fillcolor="#fbe7e5", color="#aa3c35"];
+    inicio [shape=point, pos="20,510!", width=0.08, height=0.08, label="", fillcolor="#334155"];
+    q0 [pos="140,510!", label="q0"];
+    qBusca1 [pos="500,510!", label="qBusca1"];
+    qRegresa [pos="860,510!", label="qRegresa"];
+    qVerifica [pos="500,240!", label="qVerifica"];
+    qAcepta [pos="860,240!", shape=doublecircle, label="qAcepta", fillcolor="#dcfce7", color="#15803d"];
+    qIda [pos="140,40!", label="qIda", fillcolor="#fef3c7", color="#a16207"];
+    qVuelta [pos="500,40!", label="qVuelta", fillcolor="#fef3c7", color="#a16207"];
+    qRechaza [pos="1130,750!", shape=doublecircle, label="qRechaza", fillcolor="#fee2e2", color="#b91c1c"];
 
-    inicio -> q0;
-    q0 -> q0 [label="X/X, R"];
-    q0 -> qBusca1 [label="0/X, R"];
-    qBusca1 -> qBusca1 [label="0/0, R\nY/Y, R"];
-    qBusca1 -> qRegresa [label="1/Y, L"];
-    qRegresa -> qRegresa [label="a/a, L\na en {0,1,X,Y}"];
-    qRegresa -> q0 [label="_/_, R", constraint=false];
-    q0 -> qVerifica [label="Y/Y, R"];
-    qVerifica -> qVerifica [label="Y/Y, R"];
-    qVerifica -> qAcepta [label="_/_, R", color="#277346"];
+    inicio -> q0 [pos="e,86,510 23,510 42,510 60,510 77,510"];
+    q0 -> q0 [label="X → R", lp="140,652", pos="e,166,557 114,557 60,650 220,650 171,565"];
+    q0 -> qBusca1 [label="0 → X, R", lp="320,535", pos="e,446,510 194,510 275,510 355,510 437,510"];
+    qBusca1 -> qBusca1 [label="0, Y → R", lp="500,652", pos="e,526,557 474,557 420,650 580,650 531,565"];
+    qBusca1 -> qRegresa [label="1 → Y, L", lp="680,535", pos="e,806,510 554,510 635,510 715,510 797,510"];
+    qRegresa -> qRegresa [label="0, 1, Y → L", lp="1030,434", pos="e,907,484 907,536 1035,590 1035,430 916,480"];
+    qRegresa -> q0 [label="X → R", lp="530,394", pos="e,188,485 842,459 800,385 285,385 195,478"];
+    q0 -> qVerifica [label="Y → R", lp="295,340", pos="e,456,272 179,473 265,408 365,340 449,277"];
+    qVerifica -> qVerifica [label="Y → R", lp="500,116", pos="e,526,193 474,193 420,100 580,100 531,185"];
+    qVerifica -> qAcepta [label="⊔ → R", lp="680,265", color="#15803d", fontcolor="#166534",
+                            pos="e,802,240 554,240 635,240 715,240 793,240"];
 
-    q0 -> qIda [label="2/2, R", color="#a47418"];
-    qIda -> qVuelta [label="a/a, R; a en Γ", color="#a47418"];
-    qVuelta -> qIda [label="a/a, L; a en Γ", color="#a47418"];
+    q0 -> qRechaza [label="1, ⊔ → R", lp="480,894", color="#b91c1c", fontcolor="#991b1b",
+                    pos="e,1083,784 105,551 -30,890 820,945 1076,789"];
+    qBusca1 -> qRechaza [label="2, X, ⊔ → R", lp="790,744", color="#b91c1c", fontcolor="#991b1b",
+                         pos="e,1072,750 540,546 650,710 900,750 1063,750"];
+    qRegresa -> qRechaza [label="2, ⊔ → R", lp="1010,632", color="#b91c1c", fontcolor="#991b1b",
+                          pos="e,1088,710 894,552 940,620 1030,675 1081,704"];
+    qVerifica -> qRechaza [label="0, 1, 2, X → R", lp="1130,495", color="#b91c1c", fontcolor="#991b1b",
+                           pos="e,1179,719 548,265 890,365 1290,320 1290,520 1290,620 1240,687 1187,715"];
 
-    q0 -> qRechaza [label="1/1, R\n_/_, R", color="#aa3c35", fontcolor="#aa3c35"];
-    qBusca1 -> qRechaza [label="a/a, R\na en {2,X,_}", color="#aa3c35", fontcolor="#aa3c35"];
-    qRegresa -> qRechaza [label="2/2, R", color="#aa3c35", fontcolor="#aa3c35"];
-    qVerifica -> qRechaza [label="a/a, R\na en {0,1,2,X}", color="#aa3c35", fontcolor="#aa3c35"];
+    q0 -> qIda [label="2 → R", lp="95,258", color="#a16207", fontcolor="#854d0e",
+                pos="e,140,94 140,456 140,340 140,220 140,103"];
+    qIda -> qVuelta [label="0, 1, 2, X, Y, ⊔ → R", lp="320,98", color="#a16207", fontcolor="#854d0e",
+                      pos="e,448,55 192,55 260,83 380,83 440,58"];
+    qVuelta -> qIda [label="0, 1, 2, X, Y, ⊔ → L", lp="320,-18", color="#a16207", fontcolor="#854d0e",
+                      pos="e,192,25 448,25 380,-3 260,-3 200,22"];
 
-    leyenda [shape=plain, style="", label=<
-        <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="5">
-        <TR><TD ALIGN="LEFT"><B>Notación de cada arista: leer/escribir, movimiento</B></TD></TR>
-        <TR><TD ALIGN="LEFT">R: derecha · L: izquierda · _: blanco</TD></TR>
-        <TR><TD ALIGN="LEFT">Γ = {0, 1, 2, X, Y, _}</TD></TR>
-        <TR><TD ALIGN="LEFT">a/a con a en S representa una regla por cada símbolo de S.</TD></TR>
-        <TR><TD ALIGN="LEFT">X marca un 0 procesado; Y marca un 1 procesado.</TD></TR>
-        <TR><TD ALIGN="LEFT">Los estados finales no tienen transiciones salientes.</TD></TR>
+    leyenda [shape=plain, pos="650,-190!", fixedsize=false, fontname="Arial", fontsize=17, label=<
+        <TABLE BORDER="0" CELLBORDER="0" CELLPADDING="7">
+        <TR><TD ALIGN="LEFT" COLSPAN="2"><B>Lectura de las etiquetas (notación del material de clase)</B></TD></TR>
+        <TR><TD ALIGN="LEFT"><B>0 → X, R</B>: leer 0, escribir X, mover a la derecha.</TD><TD ALIGN="LEFT">L: izquierda · R: derecha.</TD></TR>
+        <TR><TD ALIGN="LEFT"><B>0, Y → R</B>: una regla por símbolo; conserva lo leído.</TD><TD ALIGN="LEFT"><FONT FACE="Cambria Math">⊔</FONT>: blanco; en los archivos se escribe _.</TD></TR>
+        <TR><TD ALIGN="LEFT">X marca un 0 procesado; Y marca un 1 procesado.</TD><TD ALIGN="LEFT">Σ = {0, 1, 2} · Γ = {0, 1, 2, X, Y, <FONT FACE="Cambria Math">⊔</FONT>}.</TD></TR>
+        <TR><TD ALIGN="LEFT" COLSPAN="2">Verde: aceptación · Rojo: rechazo · Ocre: ciclo al empezar con 2. Los dos estados finales no tienen salidas.</TD></TR>
+        <TR><TD ALIGN="LEFT" COLSPAN="2">Cinta con extremo izquierdo en 0: L desde 0 conserva la posición. qRegresa vuelve hasta la X recién escrita.</TD></TR>
         </TABLE>
     >];
 }

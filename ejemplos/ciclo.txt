@@ -26,13 +26,13 @@ qBusca1 X -> qRechaza X R
 qBusca1 Y -> qBusca1 Y R
 qBusca1 _ -> qRechaza _ R
 
-# Volver al blanco que está a la izquierda de la entrada.
+# Volver hasta la X del cero recién emparejado y avanzar una celda.
 qRegresa 0 -> qRegresa 0 L
 qRegresa 1 -> qRegresa 1 L
 qRegresa 2 -> qRechaza 2 R
-qRegresa X -> qRegresa X L
+qRegresa X -> q0 X R
 qRegresa Y -> qRegresa Y L
-qRegresa _ -> q0 _ R
+qRegresa _ -> qRechaza _ R
 
 # Solo deben quedar unos marcados: Y* seguido de blanco.
 qVerifica 0 -> qRechaza 0 R

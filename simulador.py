@@ -184,7 +184,7 @@ def validar_maquina(maquina: Maquina) -> None:
 
 
 class Cinta:
-    """Una sola cinta, ilimitada en ambos sentidos y con blanco implícito.
+    """Una sola cinta, con extremo izquierdo en 0 y blanco implícito.
 
     El diccionario representa LAS celdas de la cinta, no una segunda memoria.
     Solo almacena las celdas no blancas: las demás se leen como blanco.
@@ -201,10 +201,14 @@ class Cinta:
 
     def leer(self, posicion: int) -> str:
         """Lee una celda; get devuelve blanco si la posición no está almacenada."""
+        if posicion < 0:
+            raise ValueError("La cinta empieza en la posición 0.")
         return self.celdas.get(posicion, self.blanco)
 
     def escribir(self, posicion: int, simbolo: str) -> None:
         """Sobrescribe una celda; escribir blanco equivale a borrar su contenido."""
+        if posicion < 0:
+            raise ValueError("La cinta empieza en la posición 0.")
         if simbolo == self.blanco:
             self.celdas.pop(posicion, None)  # No falla si la celda ya estaba vacía.
         else:
@@ -213,12 +217,15 @@ class Cinta:
     def escribir_configuracion(self, archivo: TextIO, estado: str, cabezal: int) -> None:
         """Escribe α q β: q aparece justo antes de la celda que está leyendo.
 
-        Muestra el intervalo mínimo que contiene el cabezal y todas las celdas
-        no blancas. Los blancos fuera del intervalo quedan implícitos. La salida
+        Muestra desde la celda 0 hasta el cabezal o la última celda no blanca.
+        Conserva los blancos iniciales para identificar el extremo izquierdo.
+        Los blancos finales innecesarios quedan implícitos. La salida
         se escribe celda por celda y nunca se consulta para decidir transiciones.
         """
-        # Con cinta vacía, el intervalo contiene solamente la celda del cabezal.
-        izquierda = min(cabezal, min(self.celdas, default=cabezal))
+        if cabezal < 0:
+            raise ValueError("El cabezal no puede salir por el extremo izquierdo.")
+        # La configuración siempre empieza en el extremo izquierdo de la cinta.
+        izquierda = 0
         derecha = max(cabezal, max(self.celdas, default=cabezal))
         for posicion in range(izquierda, derecha + 1):
             if posicion == cabezal:
@@ -268,7 +275,11 @@ def simular(maquina: Maquina, archivo: TextIO, max_pasos: int = 1000) -> Resulta
         leido = cinta.leer(cabezal)  # 1. Leer únicamente la celda actual.
         destino, escrito, movimiento = maquina.transiciones[(estado, leido)]
         cinta.escribir(cabezal, escrito)  # 2. Escribir en esa misma celda.
-        cabezal += 1 if movimiento == "R" else -1  # 3. Mover una celda.
+        # 3. Mover una celda. Desde 0, L conserva la posición, como en clase.
+        if movimiento == "R":
+            cabezal += 1
+        else:
+            cabezal = max(0, cabezal - 1)
         estado = destino  # 4. Entrar al estado indicado por δ.
         pasos += 1  # El contador solo controla el límite y el informe.
         archivo.write(f"⊢ C{pasos}: ")

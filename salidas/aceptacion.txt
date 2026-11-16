@@ -9,22 +9,16 @@ C0: q0 0011
 ⊢ C2: X0 qBusca1 11
 ⊢ C3: X qRegresa 0Y1
 ⊢ C4: qRegresa X0Y1
-⊢ C5: qRegresa _X0Y1
-⊢ C6: q0 X0Y1
-⊢ C7: X q0 0Y1
-⊢ C8: XX qBusca1 Y1
-⊢ C9: XXY qBusca1 1
-⊢ C10: XX qRegresa YY
-⊢ C11: X qRegresa XYY
-⊢ C12: qRegresa XXYY
-⊢ C13: qRegresa _XXYY
-⊢ C14: q0 XXYY
-⊢ C15: X q0 XYY
-⊢ C16: XX q0 YY
-⊢ C17: XXY qVerifica Y
-⊢ C18: XXYY qVerifica _
-⊢ C19: XXYY_ qAcepta _
+⊢ C5: X q0 0Y1
+⊢ C6: XX qBusca1 Y1
+⊢ C7: XXY qBusca1 1
+⊢ C8: XX qRegresa YY
+⊢ C9: X qRegresa XYY
+⊢ C10: XX q0 YY
+⊢ C11: XXY qVerifica Y
+⊢ C12: XXYY qVerifica _
+⊢ C13: XXYY_ qAcepta _
 
 Resultado: ACEPTADA
-Transiciones ejecutadas: 19
+Transiciones ejecutadas: 13
 Estado final observado: qAcepta
